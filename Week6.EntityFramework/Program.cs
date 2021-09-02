@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Week6.EntityFramework.Core.Models;
@@ -48,8 +49,80 @@ namespace Week6.EntityFramework
             //AddKnightWithWeapon();
 
             //Metodo per aggiungere una o più armi a un cavaliere esistente
-            AddNewWeaponToExistingKnight_Disconnected();
+            //AddNewWeaponToExistingKnight_Disconnected();
+
+            //Metodo per aggiungere una o più armi a un cavaliere esistente con attach
+            //AddNewWeaponToExistingKnight_Disconnected_Attach();
+
+            //Metodo per recuperare cavalieri e le armi dei cavalieri
+            //EagerLoadingKnightWithWeapons();
+
+            //Metodo per recuperare cavalieri che hanno come arma l'Ascia
+            EagerLoadingKnightWithWeapons_Filter();
         }
+
+        //PARTE 1
+
+        #region Caricamento dei dati correlati
+        //Eager loading
+
+        //Recuperare cavalieri e le armi dei cavalieri
+        private static void EagerLoadingKnightWithWeapons()
+        {
+            var knights = _knightsContext.Knights.ToList();
+            //se voglio recuperare sia il cavaliere che le sue armi devo usare include
+
+            var knightsWithWeapons = _knightsContext.Knights.Include(k => k.Weapons).ToList();
+        }
+
+        //Recuperare cavalieri e solo le armi con descrizione Ascia
+        private static void EagerLoadingKnightWithWeapons_Filter()
+        {
+            /*var knightsWithAscia = _knightsContext.Knights.Include(k => k.Weapons
+            .Where(w => w.Description == "Ascia"))
+            .ToList();*/
+
+            var www = _knightsContext.Weapons.Where(w => w.Description == "Spada").Include(k => k.Knight).ToList();
+        }
+
+        //QUERY PROJECTIONS
+
+        //Solo id e nome del cavaliere
+        private static void IdAndName_AnonimousType()
+        {
+            var knights = _knightsContext.Knights
+                .Select(k => new { k.Id, k.Name }).ToList();
+        }
+
+        public struct IdAndName
+        {
+            public int Id;
+            public string Name;
+
+            public IdAndName(int id, string name)
+            {
+                Id = id;
+                Name = name;
+            }
+        }
+
+        public static void IdAndName_Struct()
+        {
+            var knights = _knightsContext.Knights
+                .Select(k => new IdAndName (k.Id, k.Name ))
+                .ToList();
+        }
+
+        //EXPLICIT LOADING
+        private static void ExplicitLoading()
+        {
+            var knight = _knightsContext.Knights.Find(6);
+            _knightsContext.Entry(knight).Collection(k => k.Weapons).Load();
+            _knightsContext.Entry(knight).Reference(k => k.Horse).Load(); //LOAD SOLO SU ELEMENTI SINGOLI, NON LISTA
+        }
+
+        //LAZY LOADING
+        #endregion
 
         private static void FetchKnights()
         {
@@ -219,7 +292,7 @@ namespace Week6.EntityFramework
 
         private static void AddNewWeaponToExistingKnight_Disconnected_Attach()
         {
-            var knight = _knightsContext.Knights.Find(3);
+            var knight = _knightsContext.Knights.Find(6);
             knight.Weapons.Add(new Weapon
             {
                 Description = "Spada"

@@ -14,9 +14,13 @@ namespace Week6.EF.BookStore.Core.Models
         public string Author { get; set; }
         public int Quantity { get; set; }
 
+        public Shelf Shelf { get; set; }
+        //foreign key
+        public int ShelfId { get; set; }
+
         public string Print()
         {
-            return $"Codice ISBN : {ISBN}, Titolo : {Title}, Autore : {Author}, Quantità : {Quantity}";
+            return $"Codice ISBN : {ISBN}, Titolo : {Title}, Autore : {Author}, Quantità : {Quantity}, Scaffale : {Shelf.Code}";
         }
     }
 }

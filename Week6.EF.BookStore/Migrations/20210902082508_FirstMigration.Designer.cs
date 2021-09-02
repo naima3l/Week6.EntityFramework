@@ -9,8 +9,8 @@ using Week6.EF.BookStore.EntityFramework;
 namespace Week6.EF.BookStore.Migrations
 {
     [DbContext(typeof(BookContext))]
-    [Migration("20210901084533_Book")]
-    partial class Book
+    [Migration("20210902082508_FirstMigration")]
+    partial class FirstMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -36,12 +36,50 @@ namespace Week6.EF.BookStore.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
+                    b.Property<int>("ShelfId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ShelfId");
+
                     b.ToTable("Books");
+                });
+
+            modelBuilder.Entity("Week6.EF.BookStore.Core.Models.Shelf", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(6)
+                        .HasColumnType("nvarchar(6)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Shelves");
+                });
+
+            modelBuilder.Entity("Week6.EF.BookStore.Core.Models.Book", b =>
+                {
+                    b.HasOne("Week6.EF.BookStore.Core.Models.Shelf", "Shelf")
+                        .WithMany("Books")
+                        .HasForeignKey("ShelfId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Shelf");
+                });
+
+            modelBuilder.Entity("Week6.EF.BookStore.Core.Models.Shelf", b =>
+                {
+                    b.Navigation("Books");
                 });
 #pragma warning restore 612, 618
         }

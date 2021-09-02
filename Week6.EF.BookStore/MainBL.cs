@@ -11,9 +11,11 @@ namespace Week6.EF.BookStore
     public class MainBL //business layer più o meno
     {
         private IBookRepository _bookRepo;
-        public MainBL(IBookRepository bookRepository)
+        private IShelfRepository _shelfRepo;
+        public MainBL(IBookRepository bookRepository, IShelfRepository shelfRepository)
         {
             _bookRepo = bookRepository;
+            _shelfRepo = shelfRepository;
         }
 
         public List<Book> FetchBooks()
@@ -26,9 +28,9 @@ namespace Week6.EF.BookStore
             return _bookRepo.GetByIsbn(isbn);
         }
 
-        public void AddNewBook(string isbn, string author, string title, int quantity)
+        public void AddNewBook(string isbn, string author, string title, int quantity, Shelf shelf)
         {
-            var newBook = new Book { ISBN = isbn, Author = author, Quantity = quantity, Title = title };
+            var newBook = new Book { ISBN = isbn, Author = author, Quantity = quantity, Title = title, ShelfId = shelf.Id};
             if (newBook == null) throw new ArgumentNullException();
             _bookRepo.Add(newBook);
         }
@@ -41,6 +43,19 @@ namespace Week6.EF.BookStore
         internal void UpdateBookQuantity(Book book, int quantity)
         {
             _bookRepo.UpdateQuantity(book,quantity);
+        }
+
+        internal List<Shelf> FetchShelves()
+        {
+            return _shelfRepo.Fetch();
+        }
+
+        internal Shelf GetByCode(string code)
+        {
+            if (string.IsNullOrEmpty(code)) throw new ArgumentNullException();
+
+            var shelf = _shelfRepo.GetByCode(code);
+            return shelf;
         }
     }
 }

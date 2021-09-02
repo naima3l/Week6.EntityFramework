@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,7 @@ namespace Week6.EF.BookStore.EntityFramework.Repositories
         {
             //var newBook = new Book { ISBN = item.ISBN , Author = item.Author, Quantity = 1, Title = item.Title};
 
+            //bookCtx.Books.Add();
             bookCtx.Books.Add(item);
             bookCtx.SaveChanges();
         }
@@ -35,8 +37,16 @@ namespace Week6.EF.BookStore.EntityFramework.Repositories
 
         public List<Book> Fetch()
         {
-            var books = bookCtx.Books.ToList();
-            return books;
+            try
+            {
+                var books = bookCtx.Books.Include(b => b.Shelf)
+                    .ToList();
+                return books;
+            }
+            catch(Exception)
+            {
+                return new List<Book>();
+            }
         }
 
         public Book GetById(int id)

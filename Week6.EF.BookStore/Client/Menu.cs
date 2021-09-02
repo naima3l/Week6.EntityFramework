@@ -10,7 +10,7 @@ namespace Week6.EF.BookStore.Client
 {
     public class Menu
     {
-        private static MainBL mainBL = new MainBL(new EFBookRepository());
+        private static MainBL mainBL = new MainBL(new EFBookRepository(), new EFShelfRepository());
 
         internal static void Start()
         {
@@ -157,12 +157,51 @@ namespace Week6.EF.BookStore.Client
                     author = Console.ReadLine();
                 } while (author.Length == 0);
 
+                Shelf shelf;
+                //scaffale
+                do
+                {
+                    Console.WriteLine("\nInserire il Codice dello scaffale in cui posizionare il libro");
+                    ShowShelves(); //mostra tutti i codici degli scaffali
+                    string code = Console.ReadLine();
+
+                    //Recupero lo scaffale con il codice inserito
+                    //Se esiste, ok. Altrimenti mi richiede di inserire il codice
+                    shelf = GetShelfByCode(code);
+                } while (shelf == null);
+
                 //inserisco il libro
-                mainBL.AddNewBook(isbn, author, title, quantity);
+                mainBL.AddNewBook(isbn, author, title, quantity,shelf);
             }
             else
             {
                 Console.WriteLine("Esiste già un libro con questo codice isbn");
+            }
+        }
+
+        private static Shelf GetShelfByCode(string code)
+        {
+            var shelf = mainBL.GetByCode(code);
+            return shelf;
+        }
+
+        private static void ShowShelves()
+        {
+            //recupera dati degli scaffali dal db
+            var shelves = mainBL.FetchShelves();
+
+            //stampa i dati
+            if(shelves.Count != 0)
+            {
+                Console.WriteLine("Scaffali: ");
+                foreach(var s in shelves)
+                {
+                    Console.WriteLine(s.Code);
+                }
+            }
+            else
+            {
+                Console.WriteLine("Non ci sono scaffali");
             }
         }
 
