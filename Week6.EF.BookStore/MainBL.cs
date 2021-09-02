@@ -57,5 +57,10 @@ namespace Week6.EF.BookStore
             var shelf = _shelfRepo.GetByCode(code);
             return shelf;
         }
+
+        internal List<Book> FetchBooksByShelf(Shelf shelf)
+        {
+            return _bookRepo.FetchBooksByShelf(shelf);
+        }
     }
 }

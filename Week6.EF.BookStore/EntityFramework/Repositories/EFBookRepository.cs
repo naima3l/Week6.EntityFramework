@@ -74,5 +74,17 @@ namespace Week6.EF.BookStore.EntityFramework.Repositories
         {
             throw new NotImplementedException();
         }
+
+        public List<Book> FetchBooksByShelf(Shelf shelf)
+        {
+            var books = bookCtx.Books.Where(b => b.ShelfId == shelf.Id).ToList();
+            List<Book> b = new List<Book>();
+
+            if (books.Count() == 0)
+            {
+                return null;
+            }
+            return books;
+        }
     }
 }

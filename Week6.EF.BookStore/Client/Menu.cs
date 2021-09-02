@@ -20,9 +20,9 @@ namespace Week6.EF.BookStore.Client
             {
                 Console.WriteLine("Benvenuto!");
 
-                Console.WriteLine("Premi 1 per aggiungere un libro \nPremi 2 per eliminare un libro \nPremi 3 per visualizzare tutti i libri in magazzino \nPremi 4 per aggiornare la quantità di un libro in magazzino \nPremi 0 per uscire");
+                Console.WriteLine("Premi 1 per aggiungere un libro \nPremi 2 per eliminare un libro \nPremi 3 per visualizzare tutti i libri in magazzino \nPremi 4 per aggiornare la quantità di un libro in magazzino \nPremi 5 per visualizzare i libri di uno scaffale \nPremi 0 per uscire");
 
-                while (!int.TryParse(Console.ReadLine(), out choice) || choice < 0 || choice > 4)
+                while (!int.TryParse(Console.ReadLine(), out choice) || choice < 0 || choice > 5)
                 {
                     Console.WriteLine("Scelta non valida! Riprova.");
                 }
@@ -45,11 +45,45 @@ namespace Week6.EF.BookStore.Client
                         //modificare la quantità
                         UpdateBookQuantity();
                         break;
+                    case 5:
+                        //visualizzare i libri di uno scaffale
+                        ShowBooksOnShelf();
+                        break;
                     case 0:
                         check = false;
                         return;
                 }
             } while (check);
+        }
+
+        private static void ShowBooksOnShelf()
+        {
+            Shelf shelf;
+            //scaffale
+            do
+            {
+                Console.WriteLine("\nInserire il Codice dello scaffale di cui vuoi visualizzare i libri");
+                ShowShelves(); //mostra tutti i codici degli scaffali
+                string code = Console.ReadLine();
+
+                //Recupero lo scaffale con il codice inserito
+                //Se esiste, ok. Altrimenti mi richiede di inserire il codice
+                shelf = GetShelfByCode(code);
+            } while (shelf == null);
+
+            List<Book> books = mainBL.FetchBooksByShelf(shelf);
+            if (books.Count == 0)
+            {
+                Console.WriteLine($"Non ci sono libri nello scaffale {shelf.Code}");
+            }
+            else
+            {
+                foreach(var b in books)
+                {
+                    Console.WriteLine(b.Print());
+                }
+            }
+
         }
 
         private static void UpdateBookQuantity()

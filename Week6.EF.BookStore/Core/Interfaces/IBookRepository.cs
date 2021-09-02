@@ -12,5 +12,6 @@ namespace Week6.EF.BookStore.Core.Interfaces
         //GetByIsbn
         Book GetByIsbn(string isbn);
         void UpdateQuantity(Book b, int q);
+        List<Book> FetchBooksByShelf(Shelf shelf);
     }
 }
