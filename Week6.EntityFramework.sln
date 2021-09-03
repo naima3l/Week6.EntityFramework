@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.31515.178
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Week6.EntityFramework", "Week6.EntityFramework\Week6.EntityFramework.csproj", "{B21FE2D3-8063-456C-AF3A-91B6BAB6DECE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Week6.EF.BookStore", "Week6.EF.BookStore\Week6.EF.BookStore.csproj", "{508ADAED-912B-41B0-943D-4EF00D0F5CC0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Week6.EF.BookStore", "Week6.EF.BookStore\Week6.EF.BookStore.csproj", "{508ADAED-912B-41B0-943D-4EF00D0F5CC0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Week6.EF.GestioneSpese", "Week6.EF.GestioneSpese\Week6.EF.GestioneSpese.csproj", "{575B2E1D-407D-4F64-89EB-3DA739FE6DF4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{508ADAED-912B-41B0-943D-4EF00D0F5CC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{508ADAED-912B-41B0-943D-4EF00D0F5CC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{508ADAED-912B-41B0-943D-4EF00D0F5CC0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{575B2E1D-407D-4F64-89EB-3DA739FE6DF4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{575B2E1D-407D-4F64-89EB-3DA739FE6DF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{575B2E1D-407D-4F64-89EB-3DA739FE6DF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{575B2E1D-407D-4F64-89EB-3DA739FE6DF4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
